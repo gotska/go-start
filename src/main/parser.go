@@ -5,6 +5,7 @@ import (
 	"golang.org/x/net/html"
 	"net/http"
 	"strings"
+	"log"
 )
 
 func main() {
@@ -35,7 +36,7 @@ func main() {
 	fmt.Println("\nFound", len(foundUrls), "unique urls:\n")
 
 	for url, _ := range foundUrls {
-		fmt.Println(" - " + url)
+		crawlerTitle(url)
 	}
 
 	close(chUrls)
@@ -107,3 +108,39 @@ func crawl(url string, ch chan string, chFinished chan bool) {
 		}
 	}
 }
+
+func crawlerTitle(url string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	root, err := html.Parse(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	element, ok := getElementByClass("post-item__title", root)
+	if !ok {
+		fmt.Println("element not found")
+
+	} else {
+
+		fmt.Println(element.FirstChild.Data)
+	}
+
+}
+
+func getElementByClass(id string, n *html.Node) (element *html.Node, ok bool) {
+	for _, a := range n.Attr {
+		if a.Key == "class" && a.Val == id {
+			return n, true
+		}
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		if element, ok = getElementByClass(id, c); ok {
+			return
+		}
+	}
+	return
+}
+
