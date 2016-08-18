@@ -7,14 +7,14 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"time"
 	"strings"
+	"time"
 )
 
 func main() {
 	start := time.Now()
 	ch := make(chan string)
-	for _,url := range os.Args[1:] {
+	for _, url := range os.Args[1:] {
 		go fetch(url, ch)
 	}
 	for range os.Args[1:] {

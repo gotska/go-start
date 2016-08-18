@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"fmt"
 	"os"
@@ -11,7 +10,7 @@ import (
 
 func main() {
 
-	var variable1 string  = "helloVlad"
+	var variable1 string = "helloVlad"
 
 	p := &variable1
 
@@ -21,8 +20,6 @@ func main() {
 
 	fmt.Println(variable1)
 	fmt.Println(&p)
-
-
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
@@ -42,4 +39,3 @@ func main() {
 func cleanup() {
 	fmt.Println("cleanup")
 }
-

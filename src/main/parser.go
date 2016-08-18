@@ -9,7 +9,7 @@ import (
 
 func main() {
 	foundUrls := make(map[string]bool)
-	seedUrls := [10]string{"p1","p2","p3","p4","p5","p6","p7","p8","p9","p10"}
+	seedUrls := [10]string{"p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10"}
 
 	// Channels
 	chUrls := make(chan string)
@@ -17,7 +17,7 @@ func main() {
 
 	// Kick off the crawl process (concurrently)
 	for _, url := range seedUrls {
-		go crawl("http://k.n/all/"+url, chUrls, chFinished)
+		go crawl("http://korrespondent.net/all/"+url, chUrls, chFinished)
 	}
 
 	// Subscribe to both channels
@@ -47,7 +47,7 @@ func getHref(t html.Token) (ok bool, href string) {
 	for _, a := range t.Attr {
 		if a.Key == "href" {
 			href = a.Val
-			if strings.Contains(href,"/ukraine/") {
+			if strings.Contains(href, "/ukraine/") {
 				ok = true
 			}
 		}
@@ -107,4 +107,3 @@ func crawl(url string, ch chan string, chFinished chan bool) {
 		}
 	}
 }
-
